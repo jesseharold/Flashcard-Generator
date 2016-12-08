@@ -5,6 +5,14 @@ var fs = require("fs");
 var deck = [];
 var deckName = "myCards";
 
+//select create new deck or retrieve existing deck
+// if retrieve, name of deck to retrieve, and verify it exists
+// if create new deck, prompt user to name deck
+//select view cards or add new cards
+// prompt user to add card
+// select add more cards or save deck
+//on save deck, select view deck or add new cards
+
 function makeBasicCard(front, back){
     var newCard = new BasicFlashcard(front, back);
     deck.push(newCard);
@@ -26,6 +34,21 @@ function getDeck(deckName){
         deck = JSON.parse(data);
         console.log(deck);
     });
+}
+function viewCard(cardNumber){
+    currentCard = deck[cardNumber];
+    if(currentCard.front){
+        console.log(currentCard.front);
+    } else {
+        console.log(currentCard.getPartialText());
+    }
+    //prompt for key to show back, then
+    if(currentCard.back){
+        console.log(currentCard.back);
+    } else {
+        console.log(currentCard.text);
+    }
+    //prompt for key to show next card in deck, then either view next or exit
 }
 
 //console.log(newBasicCard.front);
