@@ -5,11 +5,11 @@ function ClozeFlashcard(text, clozeStart, clozeEnd){
     
     this.getPartialText = function(){
         var partialText;
-        partialText += this.text.subString(0, this.clozeStart);
+        partialText += this.text.substring(0, this.clozeStart);
         partialText += " [ ... ] ";
-        partialText += this.text.subString(this.clozeEnd);
+        partialText += this.text.substring(this.clozeEnd);
         return partialText;
     };
 }
 
-module.exports(ClozeFlashcard);
+module.exports = ClozeFlashcard;

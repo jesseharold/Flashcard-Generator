@@ -3,4 +3,4 @@ function BasicFlashcard(front, back){
     this.back = back;
 }
 
-module.exports(BasicFlashcard);
+module.exports = BasicFlashcard;
