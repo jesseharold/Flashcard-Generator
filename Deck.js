@@ -3,7 +3,7 @@ var fs = require("fs");
 function Deck(name, author){
     this.name = name;
     this.author = author;
-    this.cards = [{name:this.name,author:this.author}];
+    this.cards = [];
     this.currentCard = 0;
 
     this.addCard = function(card){
@@ -25,36 +25,44 @@ function Deck(name, author){
         return cards[currentCard];
     };
     this.loadDeck = function(){
-        console.log("loading deck");
-        fs.readFile("data/" + this.name + ".json", "utf-8", function(error, data){
+        var self = this;
+        var fileName = "data/" + this.name + "-" + this.author + ".json";
+        //console.log("loading deck from " + fileName);
+        fs.readFile(fileName, "utf8", function(error, data){
             if(error){
                 console.log("There was an error loading the deck.");
                 return console.log(error);
             } else {
-                this.cards = JSON.parse(data);
-                console.log("Opened deck " + this.name + this.cards);
+                self.cards = JSON.parse(data);
+                //set deck type
+                if(self.cards[0].front){
+                    self.setCardType("basic");
+                } else {
+                    self.setCardType("cloze");
+                }
             }
         });
     };
     this.saveDeck = function(){
         var self = this;
-        fs.writeFile("data/" + this.name + ".json", JSON.stringify(this.cards), function(error){
+        var fileName = "data/" + this.name + "-" + this.author + ".json";
+        fs.writeFile(fileName, JSON.stringify(this.cards), function(error){
             if(error){
                 console.log("There was an error saving the deck");
                 return console.log(error);
             } else {
-                console.log("Cards saved to the file " + self.name + ".json");
-                if (fs.existsSync("data/" + self.name + ".json")){
-                    console.log("Save success!");
+                // console.log("Cards saved to file");
+                if (fs.existsSync(fileName)){
+                    return true;
                 } else {
                     console.log("can't find file");
                 }
             }
-        });ha
+        });
     };
     this.setCardType = function(type){
         console.log("deck type set to " + type);
-        this.cards[0].cardType = type;
+        this.cardType = type;
     };
 }
 

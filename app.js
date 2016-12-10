@@ -17,7 +17,7 @@ function startInterface(){
             choices: ["Create a new deck of cards", "Load an existing deck of cards"]
         }, {
             name: "deckName",
-            message: "What is the name of your deck?"
+            message: "What is the name of your deck? (do not use these characters: \" / \ . ? ')"
         }, {
             name: "userName",
             message: "What is your name?"
@@ -29,18 +29,12 @@ function startInterface(){
         } else {
             //console.log("Checking for deck " + answers.deckName);
             // verify deck exists
-            if (!fs.existsSync("data/" + answers.deckName + ".json")){
+            if (!fs.existsSync("data/" + answers.deckName + "-" + answers.userName + ".json")){
                 console.log("There is no deck by that name, try again.");
                 startInterface();
             } else {
                 currentDeck.loadDeck();
-                // verify this person owns the deck
-                if (currentDeck.author !== answers.userName){
-                    // prompt this:
-                    console.log("You are not the owner of this deck. Would you like to make a copy of it?");
-                } else {
-                    deckLoadedInterface();
-                }
+                deckLoadedInterface();
             }
         }
     });
@@ -56,7 +50,7 @@ function deckLoadedInterface(){
             choices: ["Add new cards", "Study using my flash cards"]
         }
     ]).then(function(response){
-        if (response.cardType === "Add new cards"){
+        if (response.nextAction === "Add new cards"){
             addNewCard();
         } else {
             viewDeck();
@@ -86,7 +80,7 @@ function createDeckInterface(){
 
 function addNewCard(){
     console.log("Add a new card to " + currentDeck.name);
-    if (currentDeck.cards[0].cardType && currentDeck.cards[0].cardType === "basic"){
+    if (currentDeck.cardType && currentDeck.cardType === "basic"){
         inquirer.prompt([
             {
                 name: "front",
@@ -99,7 +93,7 @@ function addNewCard(){
             var newCard = new BasicFlashcard(card.front, card.back);
             currentDeck.addCard(newCard);
         });
-    } else if (currentDeck.cards[0].cardType && currentDeck.cards[0].cardType === "cloze"){
+    } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
         inquirer.prompt([
             {
                 name: "fulltext",
@@ -115,6 +109,7 @@ function addNewCard(){
             var endOfCloze = parseInt(card.clozeStart)+parseInt(card.clozeLength);
             var newCard = new ClozeFlashcard(card.fulltext, card.clozeStart, endOfCloze);
             currentDeck.addCard(newCard);
+            deckLoadedInterface();
         });
     } else {
         console.log("Card Type not set");
