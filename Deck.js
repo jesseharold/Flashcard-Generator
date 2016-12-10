@@ -1,18 +1,21 @@
 function Deck(name, author){
     this.name = name;
     this.author = author;
-    this.cards = [];
+    this.cards = [{name:this.name,author:this.author}];
     this.currentCard = 0;
 
     this.addCard = function(card){
+        console.log("adding card");
         this.cards.push(card);
         this.saveDeck();
         return this.cards;
     };
     this.getCard = function(){
+        console.log("getting card");
         return cards[currentCard];
     };
     this.nextCard = function(){
+        console.log("advancing deck");
         currentCard++;
         if (currentCard === cards.length){
             currentCard = 0;
@@ -20,6 +23,7 @@ function Deck(name, author){
         return cards[currentCard];
     };
     this.loadDeck = function(){
+        console.log("loading deck");
         fs.readFile(this.name + ".json", "utf-8", function(error, data){
             if(error){
                 console.log("There was an error loading the deck.");
@@ -31,6 +35,8 @@ function Deck(name, author){
         });
     };
     this.saveDeck = function(){
+        console.log("saving deck to " + this.name + ".json");
+        console.log(JSON.stringify(this.cards));
         fs.writeFile(this.name + ".json", JSON.stringify(this.cards), function(error){
             if(error){
                 console.log("There was an error saving the deck");
@@ -41,7 +47,8 @@ function Deck(name, author){
         });
     };
     this.setCardType = function(type){
-        this.cardType = type;
+        console.log("deck type set to " + type);
+        this.cards[0].cardType = type;
     };
 }
 

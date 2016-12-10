@@ -86,11 +86,63 @@ function createDeckInterface(){
 
 function addNewCard(){
     console.log("Add a new card to " + currentDeck.name);
-    //var newCard = new BasicFlashcard(front, back);
-    //var newCard = new BasicFlashcard(text, startCloze, endCloze);
+    if (currentDeck.cardType && currentDeck.cardType === "basic"){
+        inquirer.prompt([
+            {
+                name: "front",
+                message: "Enter the front of your new card:"
+            }, {
+                name: "back",
+                message: "Enter the back of your new card:"
+            }
+        ]).then(function(card){
+            var newCard = new BasicFlashcard(card.front, card.back);
+            currentDeck.addCard(newCard);
+        });
+    } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
+        inquirer.prompt([
+            {
+                name: "fulltext",
+                message: "Enter the full, unhidden text of your new card:"
+            }, {
+                name: "clozeStart",
+                message: "Where does the hidden text begin? Enter 0 for the first letter, 1 for the second letter, etc."
+            }, {
+                name: "clozeLength",
+                message: "How many letters are in the text that should be hidden?"
+            }
+        ]).then(function(card){
+            var endOfCloze = parseInt(card.clozeStart)+parseInt(card.clozeLength);
+            var newCard = new ClozeFlashcard(card.fulltext, card.clozeStart, endOfCloze);
+            currentDeck.addCard(newCard);
+        });
+    } else {
+        console.log("Card Type not set");
+    }
 }
 function viewDeck(){
     console.log("Study using " + currentDeck.name);
+    cardToShow = currentDeck.getCard();
+    if (currentDeck.cardType && currentDeck.cardType === "basic"){
+        console.log(cardToShow.front);
+        console.log(cardToShow.back);
+    } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
+        console.log(cardToShow.getPartialText());
+        console.log(cardToShow.text);
+    }
+    inquirer.prompt([
+        {
+            message: "Show next card? (y/n)",
+            name: "next"
+        }
+    ]).then(function(command){
+        if (command.next === "y"){
+            currentDeck.nextCard();
+            viewDeck();
+        } else {
+            deckLoadedInterface();
+        }
+    });
 }
 
 
