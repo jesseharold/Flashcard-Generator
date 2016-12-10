@@ -4,6 +4,7 @@ var fs = require("fs");
 
 var deck = [];
 var deckName = "myCards";
+var currentCard = 0;
 
 //select create new deck or retrieve existing deck
 // if retrieve, name of deck to retrieve, and verify it exists
@@ -25,14 +26,19 @@ function saveDeck(deckName){
     fs.writeFile(deckName + ".json", JSON.stringify(deck), function(error){
         if(error){
             return console.log(error);
+        } else {
+            console.log("Cards saved to the file " + deckName + ".json");
         }
-        console.log("We wrote to the file " + deckName + ".json");
     });
 }
 function getDeck(deckName){
-    fs.readFile(deckName + ".json", function(error, data){
-        deck = JSON.parse(data);
-        console.log(deck);
+    fs.readFile(deckName + ".json", "utf-8", function(error, data){
+        if(error){
+            return console.log(error);
+        } else {
+            deck = JSON.parse(data);
+            console.log("Opened deck " + deckname + deck);
+        }
     });
 }
 function viewCard(cardNumber){

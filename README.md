@@ -13,7 +13,7 @@ The backend will essentially constitute an API that allows users to create two t
 
 2. **Cloze-Deleted** flashcards, which present *partial* text (*"... was the first president of the United States."*), and the full text when the user requests it (*"George Washington was the first president of the United States."*)
 
-As your application will not have a front end, your only need to determine an efficient way to store cloze-deleted cards&mdash;you don't have to solve the problem of displaying them. You are free to decide how you'd like to implement this. One might represent the above flashcard thus:
+As your application will not have a front end, you only need to determine an efficient way to store cloze-deleted cards&mdash;you don't have to solve the problem of displaying them. You are free to decide how you'd like to implement this. One might represent the above flashcard thus:
 
 ```
 {
@@ -21,7 +21,7 @@ As your application will not have a front end, your only need to determine an ef
 }
 ```
 
-...And expecte the front-end to simply hide any part of the string wrapped in `{{c1::...}}`. This works, but there are better ways to do it&mdash;try to think of one.
+...And expect the front-end to simply hide any part of the string wrapped in `{{c1::...}}`. This works, but there are better ways to do it&mdash;try to think of one.
 
 ## Instructions
 
