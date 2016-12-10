@@ -92,6 +92,7 @@ function addNewCard(){
         ]).then(function(card){
             var newCard = new BasicFlashcard(card.front, card.back);
             currentDeck.addCard(newCard);
+            deckLoadedInterface();
         });
     } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
         inquirer.prompt([
@@ -122,7 +123,7 @@ function viewDeck(){
         displayAsCard(cardToShow.front);
         inquirer.prompt([
             {
-                message: "Show back of the card? (y)",
+                message: "(Enter) to show back of the card",
                 name: "reveal"
             }
         ]).then(function(next){
@@ -133,7 +134,7 @@ function viewDeck(){
         displayAsCard(cardToShow.getPartialText());
         inquirer.prompt([
             {
-                message: "Show full text? (y)",
+                message: "(Enter) to show full text",
                 name: "reveal"
             }
         ]).then(function(revealtext){
@@ -146,11 +147,11 @@ function viewDeck(){
 function askForNextCard(){
     inquirer.prompt([
         {
-            message: "Show next card? (y/n)",
+            message: "(Enter) to show next card, (n) to exit.",
             name: "next"
         }
     ]).then(function(command){
-        if (command.next === "y"){
+        if (command.next !== "n"){
             currentDeck.nextCard();
             viewDeck();
         } else {
