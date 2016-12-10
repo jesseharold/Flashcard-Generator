@@ -7,22 +7,22 @@ function Deck(name, author){
     this.currentCard = 0;
 
     this.addCard = function(card){
-        console.log("adding card");
+        //console.log("adding card");
         this.cards.push(card);
         this.saveDeck();
         return this.cards;
     };
     this.getCard = function(){
-        console.log("getting card");
-        return cards[currentCard];
+        //console.log("getting card");
+        return this.cards[this.currentCard];
     };
     this.nextCard = function(){
-        console.log("advancing deck");
-        currentCard++;
-        if (currentCard === cards.length){
-            currentCard = 0;
+        //console.log("advancing deck");
+        this.currentCard++;
+        if (this.currentCard === this.cards.length){
+            this.currentCard = 0;
         }
-        return cards[currentCard];
+        return this.cards[this.currentCard];
     };
     this.loadDeck = function(){
         var self = this;
@@ -61,7 +61,7 @@ function Deck(name, author){
         });
     };
     this.setCardType = function(type){
-        console.log("deck type set to " + type);
+        //console.log("deck type set to " + type);
         this.cardType = type;
     };
 }

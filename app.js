@@ -46,8 +46,8 @@ function deckLoadedInterface(){
         {
             name: "nextAction",
             type: "list",
-            message: "What would you like to do with your deck, " + currentDeck.name + "?",
-            choices: ["Add new cards", "Study using my flash cards"]
+            message: "What would you like to do with " + currentDeck.name + "?",
+            choices: ["Add new cards", "Use my cards to study"]
         }
     ]).then(function(response){
         if (response.nextAction === "Add new cards"){
@@ -79,7 +79,7 @@ function createDeckInterface(){
 }
 
 function addNewCard(){
-    console.log("Add a new card to " + currentDeck.name);
+    //console.log("Add a new card to " + currentDeck.name);
     if (currentDeck.cardType && currentDeck.cardType === "basic"){
         inquirer.prompt([
             {
@@ -112,19 +112,46 @@ function addNewCard(){
             deckLoadedInterface();
         });
     } else {
-        console.log("Card Type not set");
+        console.log("Error: Card Type not set");
     }
 }
 function viewDeck(){
-    console.log("Study using " + currentDeck.name);
-    cardToShow = currentDeck.getCard();
+    //console.log("Study using " + currentDeck.name);
+    var cardToShow = currentDeck.getCard();
     if (currentDeck.cardType && currentDeck.cardType === "basic"){
+        console.log("*******************************************************");
         console.log(cardToShow.front);
-        console.log(cardToShow.back);
+        console.log("*******************************************************");
+        inquirer.prompt([
+            {
+                message: "Show back of the card? (y)",
+                name: "reveal"
+            }
+        ]).then(function(next){
+            console.log("*******************************************************");
+            console.log(cardToShow.back);
+            console.log("*******************************************************");
+            askForNextCard();
+        });
     } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
+        console.log("*******************************************************");
         console.log(cardToShow.getPartialText());
-        console.log(cardToShow.text);
-    }
+        console.log("*******************************************************");
+        inquirer.prompt([
+            {
+                message: "Show full text? (y)",
+                name: "reveal"
+            }
+        ]).then(function(revealtext){
+            console.log("*******************************************************");
+            console.log(cardToShow.text);
+            console.log("*******************************************************");
+            askForNextCard();
+        });
+    }    
+}
+
+function askForNextCard(){
     inquirer.prompt([
         {
             message: "Show next card? (y/n)",
