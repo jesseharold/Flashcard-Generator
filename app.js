@@ -119,33 +119,25 @@ function viewDeck(){
     //console.log("Study using " + currentDeck.name);
     var cardToShow = currentDeck.getCard();
     if (currentDeck.cardType && currentDeck.cardType === "basic"){
-        console.log("*******************************************************");
-        console.log(cardToShow.front);
-        console.log("*******************************************************");
+        displayAsCard(cardToShow.front);
         inquirer.prompt([
             {
                 message: "Show back of the card? (y)",
                 name: "reveal"
             }
         ]).then(function(next){
-            console.log("*******************************************************");
-            console.log(cardToShow.back);
-            console.log("*******************************************************");
+            displayAsCard(cardToShow.back);
             askForNextCard();
         });
     } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
-        console.log("*******************************************************");
-        console.log(cardToShow.getPartialText());
-        console.log("*******************************************************");
+        displayAsCard(cardToShow.getPartialText());
         inquirer.prompt([
             {
                 message: "Show full text? (y)",
                 name: "reveal"
             }
         ]).then(function(revealtext){
-            console.log("*******************************************************");
-            console.log(cardToShow.text);
-            console.log("*******************************************************");
+            displayAsCard(cardToShow.text);
             askForNextCard();
         });
     }    
@@ -167,4 +159,14 @@ function askForNextCard(){
     });
 }
 
-
+function displayAsCard(text){
+    var border = " *******";
+    for (var i = 0; i <= text.length; i++){
+        border += "*";
+    }
+    console.log(" ");
+    console.log(border);
+    console.log(" *   " + text + "   *");
+    console.log(border);
+    console.log(" ");
+}
