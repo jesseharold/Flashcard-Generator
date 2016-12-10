@@ -1,62 +1,64 @@
 var ClozeFlashcard = require("./ClozeFlashcard");
 var BasicFlashcard = require("./BasicFlashcard");
+var BasicFlashcard = require("./Deck");
+var inquirer = require("inquirer");
 var fs = require("fs");
+var currentDeck;
 
-var deck = [];
-var deckName = "myCards";
-var currentCard = 0;
+function startInterface(){
+    // user selects create new deck or retrieve existing deck
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "action"
+            message: "Welcome to Flashcards. What would you like to do?",
+            choices: ["Create a new deck of cards", "Load an existing deck of cards"]
+        }, {
+            name: "deckName",
+            message: "What is the name of your deck?"
+        }, {
+            name: "userName",
+            message: "What is your name?"
+        }
+    ]).then(function(answers){
+        currentDeck = new Deck(answers.deckName, answers.userName);
+        if (answers.action === "Create a new deck of cards"){
+            createDeckInterface();
+        } else {
+            // verify deck exists
+            if (!fs.existsSync(answers.deckName + ".json")){
+                console.log("There is no deck by that name, try again.");
+                startInterface();
+            } else {
+                currentDeck.loadDeck();
+                // verify this person owns the deck
+                if (currentDeck.author !== answers.userName){
+                    // prompt this:
+                    console.log("You are not the owner of this deck. Would you like to make a copy of it?");
+                } else {
+                    deckLoadedInterface();
+                }
+            }
+        }
+    });
+}
 
-//select create new deck or retrieve existing deck
-// if retrieve, name of deck to retrieve, and verify it exists
-// if create new deck, prompt user to name deck
-//select view cards or add new cards
-// prompt user to add card
-// select add more cards or save deck
-//on save deck, select view deck or add new cards
+function deckLoadedInterface(){
+    // prompt to view deck or add cards
+}
 
-function makeBasicCard(front, back){
+function createDeckInterface(){
+    // ask for card type
+    // prompt user to start adding cards to the deck
+
+}
+
+function addNewCard(){
     var newCard = new BasicFlashcard(front, back);
-    deck.push(newCard);
-}
-function makeClozeCard(text, startCloze, endCloze){
     var newCard = new BasicFlashcard(text, startCloze, endCloze);
-    deck.push(newCard);
 }
-function saveDeck(deckName){
-    fs.writeFile(deckName + ".json", JSON.stringify(deck), function(error){
-        if(error){
-            return console.log(error);
-        } else {
-            console.log("Cards saved to the file " + deckName + ".json");
-        }
-    });
-}
-function getDeck(deckName){
-    fs.readFile(deckName + ".json", "utf-8", function(error, data){
-        if(error){
-            return console.log(error);
-        } else {
-            deck = JSON.parse(data);
-            console.log("Opened deck " + deckname + deck);
-        }
-    });
-}
-function viewCard(cardNumber){
-    currentCard = deck[cardNumber];
-    if(currentCard.front){
-        console.log(currentCard.front);
-    } else {
-        console.log(currentCard.getPartialText());
-    }
-    //prompt for key to show back, then
-    if(currentCard.back){
-        console.log(currentCard.back);
-    } else {
-        console.log(currentCard.text);
-    }
-    //prompt for key to show next card in deck, then either view next or exit
+function viewDeck(){
+
 }
 
-//console.log(newBasicCard.front);
-//console.log(newBasicCard.back);
-//console.log(newClozeCard.getPartialText());
+

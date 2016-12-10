@@ -1,0 +1,26 @@
+{
+  "name": "flashcards",
+  "version": "1.0.0",
+  "description": "an app that generates, saves, retrieves and displays two kinds of flashcards",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesseharold/Flashcard-Generator.git"
+  },
+  "keywords": [
+    "flashcards",
+    "node"
+  ],
+  "author": "harold the square",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesseharold/Flashcard-Generator/issues"
+  },
+  "homepage": "https://github.com/jesseharold/Flashcard-Generator#readme",
+  "dependencies": {
+    "inquirer": "^2.0.0"
+  }
+}
