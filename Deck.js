@@ -1,3 +1,5 @@
+var fs = require("fs");
+
 function Deck(name, author){
     this.name = name;
     this.author = author;
@@ -24,7 +26,7 @@ function Deck(name, author){
     };
     this.loadDeck = function(){
         console.log("loading deck");
-        fs.readFile(this.name + ".json", "utf-8", function(error, data){
+        fs.readFile("data/" + this.name + ".json", "utf-8", function(error, data){
             if(error){
                 console.log("There was an error loading the deck.");
                 return console.log(error);
@@ -35,16 +37,20 @@ function Deck(name, author){
         });
     };
     this.saveDeck = function(){
-        console.log("saving deck to " + this.name + ".json");
-        console.log(JSON.stringify(this.cards));
-        fs.writeFile(this.name + ".json", JSON.stringify(this.cards), function(error){
+        var self = this;
+        fs.writeFile("data/" + this.name + ".json", JSON.stringify(this.cards), function(error){
             if(error){
                 console.log("There was an error saving the deck");
                 return console.log(error);
             } else {
-                console.log("Cards saved to the file " + this.name + ".json");
+                console.log("Cards saved to the file " + self.name + ".json");
+                if (fs.existsSync("data/" + self.name + ".json")){
+                    console.log("Save success!");
+                } else {
+                    console.log("can't find file");
+                }
             }
-        });
+        });ha
     };
     this.setCardType = function(type){
         console.log("deck type set to " + type);

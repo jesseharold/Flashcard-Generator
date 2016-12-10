@@ -29,7 +29,7 @@ function startInterface(){
         } else {
             //console.log("Checking for deck " + answers.deckName);
             // verify deck exists
-            if (!fs.existsSync(answers.deckName + ".json")){
+            if (!fs.existsSync("data/" + answers.deckName + ".json")){
                 console.log("There is no deck by that name, try again.");
                 startInterface();
             } else {
@@ -86,7 +86,7 @@ function createDeckInterface(){
 
 function addNewCard(){
     console.log("Add a new card to " + currentDeck.name);
-    if (currentDeck.cardType && currentDeck.cardType === "basic"){
+    if (currentDeck.cards[0].cardType && currentDeck.cards[0].cardType === "basic"){
         inquirer.prompt([
             {
                 name: "front",
@@ -99,7 +99,7 @@ function addNewCard(){
             var newCard = new BasicFlashcard(card.front, card.back);
             currentDeck.addCard(newCard);
         });
-    } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
+    } else if (currentDeck.cards[0].cardType && currentDeck.cards[0].cardType === "cloze"){
         inquirer.prompt([
             {
                 name: "fulltext",
