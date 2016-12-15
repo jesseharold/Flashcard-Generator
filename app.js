@@ -47,13 +47,15 @@ function deckLoadedInterface(){
             name: "nextAction",
             type: "list",
             message: "What would you like to do with " + currentDeck.name + "?",
-            choices: ["Add new cards", "Use my cards to study"]
+            choices: ["Add new cards", "Use my cards to study", "I'm done with this deck."]
         }
     ]).then(function(response){
         if (response.nextAction === "Add new cards"){
             addNewCard();
-        } else {
+        } else if (response.nextAction === "Use my cards to study") {
             viewDeck();
+        } else {
+            startInterface();
         }
     });
 }
@@ -78,7 +80,7 @@ function createDeckInterface(){
     });
 }
 
-function addNewCard(){
+function addNewCard(saveIndex){
     //console.log("Add a new card to " + currentDeck.name);
     if (currentDeck.cardType && currentDeck.cardType === "basic"){
         inquirer.prompt([
@@ -91,7 +93,11 @@ function addNewCard(){
             }
         ]).then(function(card){
             var newCard = new BasicFlashcard(card.front, card.back);
-            currentDeck.addCard(newCard);
+            if (typeof saveIndex !== "undefined"){
+                currentDeck.saveCard(newCard, saveIndex);
+            } else {
+                currentDeck.addCard(newCard);
+            }
             deckLoadedInterface();
         });
     } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
@@ -109,7 +115,11 @@ function addNewCard(){
         ]).then(function(card){
             var endOfCloze = parseInt(card.clozeStart)+parseInt(card.clozeLength);
             var newCard = new ClozeFlashcard(card.fulltext, card.clozeStart, endOfCloze);
-            currentDeck.addCard(newCard);
+            if (typeof saveIndex !== "undefined"){
+                currentDeck.saveCard(newCard, saveIndex);
+            } else {
+                currentDeck.addCard(newCard);
+            }
             deckLoadedInterface();
         });
     } else {
@@ -147,15 +157,17 @@ function viewDeck(){
 function askForNextCard(){
     inquirer.prompt([
         {
-            message: "(Enter) to show next card, (n) to exit.",
+            message: "(Enter) to show next card, (x) to exit, (d) to edit this card.",
             name: "next"
         }
     ]).then(function(command){
-        if (command.next !== "n"){
+        if (command.next === "d" ){
+            addNewCard(currentDeck.currentCard);
+        } else if (command.next === "x") {
+            deckLoadedInterface();
+        } else {
             currentDeck.nextCard();
             viewDeck();
-        } else {
-            deckLoadedInterface();
         }
     });
 }

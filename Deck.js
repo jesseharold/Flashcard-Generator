@@ -24,10 +24,16 @@ function Deck(name, author){
         }
         return this.cards[this.currentCard];
     };
+    this.saveCard = function(card, index){
+        //console.log("saving card");
+        this.cards[index] = card;
+        this.saveDeck();
+        return this.cards;
+    };
     this.getPartialText = function(){
         var partialText = "";
         var card = this.cards[this.currentCard];
-        if (card.clozeStart){
+        if (typeof card.clozeStart !== "undefined"){
             partialText += card.text.substring(0, card.clozeStart);
             partialText += " [ ... ] ";
             partialText += card.text.substring(card.clozeEnd);

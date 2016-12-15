@@ -1,8 +1,13 @@
 # Flashcard-Generator
 a backend API that generates and stores user-defined flashcards, and a front-end web application that displays them
 
+## Extra features
+ * Menu can go back to the beginning
+ * There is an option to edit a card
+ * Card-like display
+ * Enter key - to easily go through cards without typing anything
+
 ## To Do List
- * fix undefined before cloze card
  * give a visual cue for where to start the cloze
  * make it so it can take more than one hidden portion
  -maybe-
