@@ -39,7 +39,7 @@ function Deck(name, author){
             partialText += card.text.substring(card.clozeEnd);
             return partialText;
         } else {
-            console.log("cannot get partialText of a Basic card.");
+            console.log("Cannot get partial text of a Basic card.");
         }
     };
     this.loadDeck = function(){

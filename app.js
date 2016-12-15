@@ -51,9 +51,9 @@ function deckLoadedInterface(){
         }
     ]).then(function(response){
         if (response.nextAction === "Add new cards"){
-            addNewCard();
+            addNewCardInterface();
         } else if (response.nextAction === "Use my cards to study") {
-            viewDeck();
+            viewDeckInterface();
         } else {
             startInterface();
         }
@@ -76,11 +76,11 @@ function createDeckInterface(){
             currentDeck.setCardType("cloze");
         }
         // prompt user to start adding cards to the deck
-        addNewCard();
+        addNewCardInterface();
     });
 }
 
-function addNewCard(saveIndex){
+function addNewCardInterface(saveIndex){
     //console.log("Add a new card to " + currentDeck.name);
     if (currentDeck.cardType && currentDeck.cardType === "basic"){
         inquirer.prompt([
@@ -125,7 +125,7 @@ function addNewCard(saveIndex){
             ]).then(function(card){
                 var newCard = new ClozeFlashcard(input.fulltext, card.clozeStart, card.clozeEnd);
                 if (typeof saveIndex !== "undefined"){
-                    // if there is an argument passed to addNewCard
+                    // if there is an argument passed to addNewCardInterface
                     // this should be saved over an existing card
                     currentDeck.saveCard(newCard, saveIndex);
                 } else {
@@ -139,7 +139,7 @@ function addNewCard(saveIndex){
         console.log("Error: Card Type not set");
     }
 }
-function viewDeck(){
+function viewDeckInterface(){
     //console.log("Study using " + currentDeck.name);
     var cardToShow = currentDeck.getCard();
     if (currentDeck.cardType && currentDeck.cardType === "basic"){
@@ -175,12 +175,12 @@ function askForNextCard(){
         }
     ]).then(function(command){
         if (command.next === "d" ){
-            addNewCard(currentDeck.currentCard);
+            addNewCardInterface(currentDeck.currentCard);
         } else if (command.next === "x") {
             deckLoadedInterface();
         } else {
             currentDeck.nextCard();
-            viewDeck();
+            viewDeckInterface();
         }
     });
 }
