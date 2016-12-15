@@ -105,23 +105,36 @@ function addNewCard(saveIndex){
             {
                 name: "fulltext",
                 message: "Enter the full, unhidden text of your new card:"
-            }, {
-                name: "clozeStart",
-                message: "Where does the hidden text begin? Enter 0 for the first letter, 1 for the second letter, etc."
-            }, {
-                name: "clozeLength",
-                message: "How many letters are in the text that should be hidden?"
             }
-        ]).then(function(card){
-            var endOfCloze = parseInt(card.clozeStart)+parseInt(card.clozeLength);
-            var newCard = new ClozeFlashcard(card.fulltext, card.clozeStart, endOfCloze);
-            if (typeof saveIndex !== "undefined"){
-                currentDeck.saveCard(newCard, saveIndex);
-            } else {
-                currentDeck.addCard(newCard);
+         ]).then(function(input){      
+            // create a string that shows the indexes of the characters
+            // to make it easier to say where to hide text      
+            var textWithNumbers = "";
+            for (var i = 0; i < input.fulltext.length; i++){
+                textWithNumbers += i + input.fulltext.charAt(i);
             }
-            deckLoadedInterface();
-        });
+            textWithNumbers += input.fulltext.length;
+            inquirer.prompt([
+                {
+                    name: "clozeStart",
+                    message: textWithNumbers + "\nWhere would you like the hidden text to begin? (Enter number)"
+                }, {
+                    name: "clozeEnd",
+                    message: "Where would you like the hidden text to end? (Enter number)"
+                }
+            ]).then(function(card){
+                var newCard = new ClozeFlashcard(input.fulltext, card.clozeStart, card.clozeEnd);
+                if (typeof saveIndex !== "undefined"){
+                    // if there is an argument passed to addNewCard
+                    // this should be saved over an existing card
+                    currentDeck.saveCard(newCard, saveIndex);
+                } else {
+                    currentDeck.addCard(newCard);
+                }
+                //back to main deck menu
+                deckLoadedInterface();
+            });
+        });   
     } else {
         console.log("Error: Card Type not set");
     }
