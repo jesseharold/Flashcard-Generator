@@ -24,6 +24,18 @@ function Deck(name, author){
         }
         return this.cards[this.currentCard];
     };
+    this.getPartialText = function(){
+        var partialText = "";
+        var card = this.cards[this.currentCard];
+        if (card.clozeStart){
+            partialText += card.text.substring(0, card.clozeStart);
+            partialText += " [ ... ] ";
+            partialText += card.text.substring(card.clozeEnd);
+            return partialText;
+        } else {
+            console.log("cannot get partialText of a Basic card.");
+        }
+    };
     this.loadDeck = function(){
         var self = this;
         var fileName = "data/" + this.name + "-" + this.author + ".json";

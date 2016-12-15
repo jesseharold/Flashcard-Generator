@@ -131,7 +131,7 @@ function viewDeck(){
             askForNextCard();
         });
     } else if (currentDeck.cardType && currentDeck.cardType === "cloze"){
-        displayAsCard(cardToShow.getPartialText());
+        displayAsCard(currentDeck.getPartialText());
         inquirer.prompt([
             {
                 message: "(Enter) to show full text",

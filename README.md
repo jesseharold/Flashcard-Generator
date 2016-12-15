@@ -2,9 +2,10 @@
 a backend API that generates and stores user-defined flashcards, and a front-end web application that displays them
 
 ## To Do List
- * test cases: 
-    ** user tries to open a deck that does not exist
-    ** user tries to open a deck that they don't own
+ * fix undefined before cloze card
+ * give a visual cue for where to start the cloze
+ * make it so it can take more than one hidden portion
+ -maybe-
  * create front end that can take images as front of basic card
 
 
